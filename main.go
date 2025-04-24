@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 }
 
 func run(r io.Reader, w io.Writer) error {
+	flags := internal.InitFlags()
 	// Input that splits on new lines
 	input := bufio.NewScanner(r)
 	// Buffered output
@@ -25,7 +27,7 @@ func run(r io.Reader, w io.Writer) error {
 	// Listens for inputs and ends once we reach EOF
 	for input.Scan() {
 		lineText := input.Text()
-		newLine := prefix() + " " + addColor(lineText)
+		newLine := prefix(flags) + " " + addColor(lineText)
 		s := fmt.Sprintf("%s\n", newLine)
 
 		// NOTE: Ignoring output from func
@@ -39,11 +41,17 @@ func run(r io.Reader, w io.Writer) error {
 }
 
 // Adds prefix to string to differentiate between line logs
-func prefix() string {
-	// TODO: Add flag to add timestamp to prefix
-	// TODO: Add flag to add program name to replace "Culer"
-	// TODO: Add flag to select a background color for prefix
-	return internal.ColorPrefix("[Culer]")
+func prefix(f internal.Flag) string {
+	prefixStr := "[" + f.ProgramName
+
+	if f.EnableTimeStamp {
+		curTime := time.Now()
+		prefixStr += fmt.Sprintf(" - %s", curTime.Format("15:04:05.000"))
+	}
+
+	prefixStr += "]"
+
+	return internal.ColorPrefix(prefixStr)
 }
 
 // Looks for substrings: INFO, ERROR, DEBUG. Then wraps color around the string
@@ -57,12 +65,14 @@ func addColor(s string) string {
 	if infoIndex != -1 {
 		s = s[:infoIndex] + internal.ColorString("blue", "black", infoSubStr) + s[infoIndex+len(infoSubStr):]
 	}
+
 	// Color Error
 	errSubStr := "ERROR"
 	errIndex := strings.Index(s, errSubStr)
 	if errIndex != -1 {
 		s = s[:errIndex] + internal.ColorString("red", "black", errSubStr) + s[errIndex+len(errSubStr):]
 	}
+
 	// Color Debug
 	debugSubStr := "DEBUG"
 	debugIndex := strings.Index(s, debugSubStr)

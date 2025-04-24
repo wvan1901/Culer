@@ -41,7 +41,6 @@ const (
 	BG_LIGHTMAGENTA  = 105
 	BG_LIGHTCYAN     = 106
 	BG_WHITE         = 107
-	TIME_FORMAT      = "[15:04:05.000]"
 )
 
 type color struct {
