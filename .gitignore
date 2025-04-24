@@ -1,0 +1,5 @@
+# Folder used for testing purposes
+data/
+
+# Mac stuff
+.DS_Store
