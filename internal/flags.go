@@ -4,16 +4,22 @@ import (
 	"flag"
 )
 
+const (
+	PROGRAM_NAME = "Culer"
+)
+
 type Flag struct {
 	EnableTimeStamp bool
 	ProgramName     string
 }
 
-func InitFlags() Flag {
-	enableTime := flag.Bool("time", false, "Decided to wrap line by a time stamp")
-	programName := flag.String("program-name", "Culer", "Program name being wrapped")
+func InitFlags(args []string) Flag {
+	fs := flag.NewFlagSet(PROGRAM_NAME, flag.ContinueOnError)
 
-	flag.Parse()
+	enableTime := fs.Bool("time", false, "Wrap line by a time stamp")
+	programName := fs.String("program-name", PROGRAM_NAME, "Program name being wrapped")
+
+	fs.Parse(args)
 
 	return Flag{
 		EnableTimeStamp: *enableTime,

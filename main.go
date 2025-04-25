@@ -11,14 +11,14 @@ import (
 )
 
 func main() {
-	if err := run(os.Stdin, os.Stdout); err != nil {
+	if err := run(os.Stdin, os.Stdout, os.Args[1:]); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
 	}
 }
 
-func run(r io.Reader, w io.Writer) error {
-	flags := internal.InitFlags()
+func run(r io.Reader, w io.Writer, args []string) error {
+	flags := internal.InitFlags(args)
 	// Input that splits on new lines
 	input := bufio.NewScanner(r)
 	// Buffered output
