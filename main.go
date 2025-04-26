@@ -23,11 +23,13 @@ func run(r io.Reader, w io.Writer, args []string) error {
 	input := bufio.NewScanner(r)
 	// Buffered output
 	output := bufio.NewWriter(w)
+	// String color replacer
+	re := createReplacer(flags)
 
 	// Listens for inputs and ends once we reach EOF
 	for input.Scan() {
 		lineText := input.Text()
-		newLine := prefix(flags) + " " + addColor(lineText, flags)
+		newLine := prefix(flags) + " " + re.Replace(lineText)
 		s := fmt.Sprintf("%s\n", newLine)
 
 		// NOTE: Ignoring output from func
@@ -54,28 +56,9 @@ func prefix(f internal.Flag) string {
 	return internal.ColorPrefix(prefixStr, f.PrefixBgColor)
 }
 
-// Looks for substrings: INFO, ERROR, DEBUG. Then wraps color around the string
-func addColor(s string, f internal.Flag) string {
-	// Color Info
-	infoSubStr := f.InfoReplaceStr
-	infoIndex := strings.Index(s, infoSubStr)
-	if infoIndex != -1 {
-		s = s[:infoIndex] + internal.ColorString("blue", "black", infoSubStr) + s[infoIndex+len(infoSubStr):]
-	}
-
-	// Color Error
-	errSubStr := f.ErrorReplaceStr
-	errIndex := strings.Index(s, errSubStr)
-	if errIndex != -1 {
-		s = s[:errIndex] + internal.ColorString("red", "black", errSubStr) + s[errIndex+len(errSubStr):]
-	}
-
-	// Color Debug
-	debugSubStr := f.DebugReplaceStr
-	debugIndex := strings.Index(s, debugSubStr)
-	if debugIndex != -1 {
-		s = s[:debugIndex] + internal.ColorString("yellow", "black", debugSubStr) + s[debugIndex+len(debugSubStr):]
-	}
-
-	return s
+func createReplacer(f internal.Flag) *strings.Replacer {
+	infoColored := internal.ColorString("blue", "black", f.InfoReplaceStr)
+	errColored := internal.ColorString("red", "black", f.ErrorReplaceStr)
+	debugColored := internal.ColorString("yellow", "black", f.DebugReplaceStr)
+	return strings.NewReplacer(f.InfoReplaceStr, infoColored, f.ErrorReplaceStr, errColored, f.DebugReplaceStr, debugColored)
 }
