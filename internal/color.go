@@ -48,8 +48,9 @@ type color struct {
 	Bg int // Background
 }
 
-func ColorPrefix(s string) string {
-	c := color{Fg: FG_BLACK, Bg: BG_LIGHTGREEN}
+func ColorPrefix(s, bgColor string) string {
+	bg := getBgColor(bgColor)
+	c := color{Fg: FG_BLACK, Bg: bg}
 	return colorString(c, s)
 }
 
@@ -84,21 +85,21 @@ func getFgColor(c string) int {
 		return FG_MAGENTA
 	case "cyan":
 		return FG_CYAN
-	case "light gray":
+	case "light-gray":
 		return FG_LIGHTGRAY
-	case "dark gray":
+	case "dark-gray":
 		return FG_DARKGRAY
-	case "light red":
+	case "light-red":
 		return FG_LIGHTRED
-	case "light green":
+	case "light-green":
 		return FG_LIGHTGREEN
-	case "light yellow":
+	case "light-yellow":
 		return FG_LIGHTYELLOW
-	case "light blue":
+	case "light-blue":
 		return FG_LIGHTBLUE
-	case "light magenta":
+	case "light-magenta":
 		return FG_LIGHTMAGENTA
-	case "light cyan":
+	case "light-cyan":
 		return FG_LIGHTCYAN
 	case "white":
 		return FG_WHITE
@@ -123,21 +124,21 @@ func getBgColor(c string) int {
 		return BG_MAGENTA
 	case "cyan":
 		return BG_CYAN
-	case "light gray":
+	case "light-gray":
 		return BG_LIGHTGRAY
-	case "dark gray":
+	case "dark-gray":
 		return BG_DARKGRAY
-	case "light red":
+	case "light-red":
 		return BG_LIGHTRED
-	case "light green":
+	case "light-green":
 		return BG_LIGHTGREEN
-	case "light yellow":
+	case "light-yellow":
 		return BG_LIGHTYELLOW
-	case "light blue":
+	case "light-blue":
 		return BG_LIGHTBLUE
-	case "light magenta":
+	case "light-magenta":
 		return BG_LIGHTMAGENTA
-	case "light cyan":
+	case "light-cyan":
 		return BG_LIGHTCYAN
 	case "white":
 		return BG_WHITE

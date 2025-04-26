@@ -11,6 +11,7 @@ const (
 type Flag struct {
 	EnableTimeStamp bool
 	ProgramName     string
+	PrefixBgColor   string
 }
 
 func InitFlags(args []string) Flag {
@@ -18,16 +19,17 @@ func InitFlags(args []string) Flag {
 
 	enableTime := fs.Bool("time", false, "Wrap line by a time stamp")
 	programName := fs.String("program-name", PROGRAM_NAME, "Program name being wrapped")
+	prefixBgColor := fs.String("prefix-bg-color", "light-green", "prefix background color")
 
 	fs.Parse(args)
 
 	return Flag{
 		EnableTimeStamp: *enableTime,
 		ProgramName:     *programName,
+		PrefixBgColor:   *prefixBgColor,
 	}
 }
 
-// TODO: Add flag to select a background color for prefix
 // TODO: Add flag that enable custom string for info, error, debug
 // TODO: Find solution to enable custom colors (Flags?)
 // TODO: Find solution to have custom string also be colored

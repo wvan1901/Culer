@@ -51,7 +51,7 @@ func prefix(f internal.Flag) string {
 
 	prefixStr += "]"
 
-	return internal.ColorPrefix(prefixStr)
+	return internal.ColorPrefix(prefixStr, f.PrefixBgColor)
 }
 
 // Looks for substrings: INFO, ERROR, DEBUG. Then wraps color around the string
