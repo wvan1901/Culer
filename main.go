@@ -27,7 +27,7 @@ func run(r io.Reader, w io.Writer, args []string) error {
 	// Listens for inputs and ends once we reach EOF
 	for input.Scan() {
 		lineText := input.Text()
-		newLine := prefix(flags) + " " + addColor(lineText)
+		newLine := prefix(flags) + " " + addColor(lineText, flags)
 		s := fmt.Sprintf("%s\n", newLine)
 
 		// NOTE: Ignoring output from func
@@ -55,26 +55,23 @@ func prefix(f internal.Flag) string {
 }
 
 // Looks for substrings: INFO, ERROR, DEBUG. Then wraps color around the string
-func addColor(s string) string {
-	// TODO: Add flag that enable custom string for info, error, debug
-	// TODO: Add flag that enable custom colors
-
+func addColor(s string, f internal.Flag) string {
 	// Color Info
-	infoSubStr := "INFO"
+	infoSubStr := f.InfoReplaceStr
 	infoIndex := strings.Index(s, infoSubStr)
 	if infoIndex != -1 {
 		s = s[:infoIndex] + internal.ColorString("blue", "black", infoSubStr) + s[infoIndex+len(infoSubStr):]
 	}
 
 	// Color Error
-	errSubStr := "ERROR"
+	errSubStr := f.ErrorReplaceStr
 	errIndex := strings.Index(s, errSubStr)
 	if errIndex != -1 {
 		s = s[:errIndex] + internal.ColorString("red", "black", errSubStr) + s[errIndex+len(errSubStr):]
 	}
 
 	// Color Debug
-	debugSubStr := "DEBUG"
+	debugSubStr := f.DebugReplaceStr
 	debugIndex := strings.Index(s, debugSubStr)
 	if debugIndex != -1 {
 		s = s[:debugIndex] + internal.ColorString("yellow", "black", debugSubStr) + s[debugIndex+len(debugSubStr):]
