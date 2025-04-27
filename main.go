@@ -32,12 +32,11 @@ func run(r io.Reader, w io.Writer, args []string) error {
 		newLine := prefix(flags) + " " + re.Replace(lineText)
 		s := fmt.Sprintf("%s\n", newLine)
 
-		// NOTE: Ignoring output from func
+		// NOTE: Ignoring outputs
 		output.WriteString(s)
+		// Flushed buffered output
+		output.Flush()
 	}
-
-	// Flushed remaining buffered output
-	output.Flush()
 
 	return nil
 }
