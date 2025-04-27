@@ -2,8 +2,8 @@ package main
 
 import (
 	"bufio"
-	"culer/internal"
 	"fmt"
+	"github.com/wvan1901/Culer/internal"
 	"io"
 	"os"
 	"strings"
