@@ -57,8 +57,17 @@ func prefix(f internal.Flag) string {
 }
 
 func createReplacer(f internal.Flag) *strings.Replacer {
+	replaceStrings := []string{}
 	infoColored := internal.ColorString("blue", "black", f.InfoReplaceStr)
 	errColored := internal.ColorString("red", "black", f.ErrorReplaceStr)
 	debugColored := internal.ColorString("yellow", "black", f.DebugReplaceStr)
-	return strings.NewReplacer(f.InfoReplaceStr, infoColored, f.ErrorReplaceStr, errColored, f.DebugReplaceStr, debugColored)
+	replaceStrings = append(replaceStrings, f.InfoReplaceStr, infoColored)
+	replaceStrings = append(replaceStrings, f.ErrorReplaceStr, errColored)
+	replaceStrings = append(replaceStrings, f.DebugReplaceStr, debugColored)
+	for _, s := range f.ExtraStrings {
+		extraColored := internal.ColorString(s.BackgroundColor, s.ForegroundColor, s.StringToColor)
+		replaceStrings = append(replaceStrings, s.StringToColor, extraColored)
+	}
+
+	return strings.NewReplacer(replaceStrings...)
 }
