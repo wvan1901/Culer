@@ -8,10 +8,13 @@ import (
 )
 
 const (
-	PROGRAM_NAME = "Culer"
-	INFO         = "INFO"
-	DEBUG        = "DEBUG"
-	ERROR        = "ERROR"
+	PROGRAM_NAME   = "Culer"
+	INFO           = "INFO"
+	DEBUG          = "DEBUG"
+	ERROR          = "ERROR"
+	INFO_BG_COLOR  = "blue"
+	DEBUG_BG_COLOR = "yellow"
+	ERROR_BG_COLOR = "red"
 )
 
 type Flag struct {
@@ -21,6 +24,9 @@ type Flag struct {
 	InfoReplaceStr  string
 	ErrorReplaceStr string
 	DebugReplaceStr string
+	InfoBgColor     string
+	ErrorBgColor    string
+	DebugBgColor    string
 	ExtraStrings    stringsToColor
 }
 
@@ -33,6 +39,9 @@ func InitFlags(args []string) Flag {
 	infoStr := fs.String("info-str", INFO, "Value of the info string to color")
 	errStr := fs.String("err-str", ERROR, "Value of the info string to color")
 	debugStr := fs.String("debug-str", DEBUG, "Value of the debug string to color")
+	infoBgStr := fs.String("info-color", INFO_BG_COLOR, "background color of the info string")
+	errBgStr := fs.String("err-color", ERROR_BG_COLOR, "background color of the error string")
+	debugBgStr := fs.String("debug-color", DEBUG_BG_COLOR, "background color of the debug string")
 	extraStrOpt := &stringsToColor{}
 	fs.Var(extraStrOpt, "extra-str", "Advanced option to color any additional custom string, must follow this format -> [stringValue]&[back ground color]:[foreground color] -> Ex: replace-me&red:black -> This will replace all strings 'replace-me' with a red background and a black foreground")
 
@@ -45,6 +54,9 @@ func InitFlags(args []string) Flag {
 		InfoReplaceStr:  *infoStr,
 		ErrorReplaceStr: *errStr,
 		DebugReplaceStr: *debugStr,
+		InfoBgColor:     *infoBgStr,
+		ErrorBgColor:    *errBgStr,
+		DebugBgColor:    *debugBgStr,
 		ExtraStrings:    *extraStrOpt,
 	}
 }
@@ -102,5 +114,3 @@ func (s *stringsToColor) Set(value string) error {
 
 	return nil
 }
-
-// TODO: Find solution to enable custom colors for Info, Debug, Error
