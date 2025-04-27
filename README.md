@@ -11,7 +11,8 @@ ascii escape code coloring and outputs it to stdout.
 # How to install
 Run this command to install Culer
 ```bash
-go install https://github.com/wvan1901/Culer
+go get github.com/wvan1901/Culer
+go install github.com/wvan1901/Culer
 ```
 
 # How to run
