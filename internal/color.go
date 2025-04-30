@@ -48,9 +48,10 @@ type color struct {
 	Bg int // Background
 }
 
-func ColorPrefix(s, bgColor string) string {
+func ColorPrefix(s, bgColor, fgColor string) string {
 	bg := getBgColor(bgColor)
-	c := color{Fg: FG_BLACK, Bg: bg}
+	fg := getFgColor(fgColor)
+	c := color{Fg: fg, Bg: bg}
 	return colorString(c, s)
 }
 

@@ -52,7 +52,7 @@ func prefix(f internal.Flag) string {
 
 	prefixStr += "]"
 
-	return internal.ColorPrefix(prefixStr, f.PrefixBgColor)
+	return internal.ColorPrefix(prefixStr, f.PrefixBgColor, f.PrefixFgColor)
 }
 
 // Create a string replacer for all options

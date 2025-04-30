@@ -21,6 +21,7 @@ type Flag struct {
 	EnableTimeStamp bool
 	ProgramName     string
 	PrefixBgColor   string
+	PrefixFgColor   string
 	InfoReplaceStr  string
 	ErrorReplaceStr string
 	DebugReplaceStr string
@@ -35,7 +36,8 @@ func InitFlags(args []string) Flag {
 
 	enableTime := fs.Bool("time", false, "Add time stamp to prefix")
 	programName := fs.String("program-name", PROGRAM_NAME, "Program name, this gets displayed in prefix")
-	prefixBgColor := fs.String("prefix-bg-color", "light-green", "Prefix background color")
+	prefixBgColor := fs.String("prefix-bg-color", "black", "Prefix background color")
+	prefixFgColor := fs.String("prefix-fg-color", "light-green", "Prefix foreground color")
 	infoStr := fs.String("info-str", INFO, "Value of the info string to color")
 	errStr := fs.String("err-str", ERROR, "Value of the error string to color")
 	debugStr := fs.String("debug-str", DEBUG, "Value of the debug string to color")
@@ -51,6 +53,7 @@ func InitFlags(args []string) Flag {
 		EnableTimeStamp: *enableTime,
 		ProgramName:     *programName,
 		PrefixBgColor:   *prefixBgColor,
+		PrefixFgColor:   *prefixFgColor,
 		InfoReplaceStr:  *infoStr,
 		ErrorReplaceStr: *errStr,
 		DebugReplaceStr: *debugStr,
