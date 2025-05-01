@@ -58,9 +58,9 @@ func prefix(f internal.Flag) string {
 // Create a string replacer for all options
 func createReplacer(f internal.Flag) *strings.Replacer {
 	replaceStrings := []string{}
-	infoColored := internal.ColorString(f.InfoBgColor, "black", f.InfoReplaceStr)
-	errColored := internal.ColorString(f.ErrorBgColor, "black", f.ErrorReplaceStr)
-	debugColored := internal.ColorString(f.DebugBgColor, "black", f.DebugReplaceStr)
+	infoColored := internal.ColorString(f.InfoBgColor, f.InfoFgColor, f.InfoReplaceStr)
+	errColored := internal.ColorString(f.ErrorBgColor, f.ErrorFgColor, f.ErrorReplaceStr)
+	debugColored := internal.ColorString(f.DebugBgColor, f.DebugFgColor, f.DebugReplaceStr)
 	replaceStrings = append(replaceStrings, f.InfoReplaceStr, infoColored)
 	replaceStrings = append(replaceStrings, f.ErrorReplaceStr, errColored)
 	replaceStrings = append(replaceStrings, f.DebugReplaceStr, debugColored)
