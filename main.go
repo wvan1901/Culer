@@ -3,14 +3,26 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/wvan1901/Culer/internal"
 	"io"
 	"os"
+	"os/signal"
 	"strings"
 	"time"
+
+	"github.com/wvan1901/Culer/internal"
 )
 
 func main() {
+	sigChan := make(chan os.Signal, 1)   // creating a buffered channel and register it to catch sigint (ctrl+c).
+	signal.Notify(sigChan, os.Interrupt) // calling signal.Notify prevents Go from exiting on the signal automatically.
+
+	// Listen for signals in the background
+	go func() {
+		<-sigChan // First Ctrl+C: Catch it and do nothing, letting main() finish reading stdin
+		<-sigChan // Second Ctrl+C: Force exit immediately
+		os.Exit(130)
+	}()
+
 	if err := run(os.Stdin, os.Stdout, os.Args[1:]); err != nil {
 		fmt.Fprintf(os.Stderr, "%s\n", err)
 		os.Exit(1)
@@ -36,6 +48,10 @@ func run(r io.Reader, w io.Writer, args []string) error {
 		output.WriteString(s)
 		// Flushed buffered output
 		output.Flush()
+	}
+
+	if err := input.Err(); err != nil {
+		return err
 	}
 
 	return nil
